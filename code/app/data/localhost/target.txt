@@ -1,1 +1,0 @@
-http://localhost/bWAPP/sqli_1.php?title=sql&form=submit (GET)  # sqlmap.py --api -c C:\Users\damn\AppData\Local\Temp\sqlmapconfig-c735e1nu
