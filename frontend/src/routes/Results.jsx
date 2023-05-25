@@ -302,35 +302,38 @@ function Summary({data}) {
       >
         <Heading size={'sm'} ml={'1em'} mt={'0.4em'}><FormattedMessage id={"res_title_5"} defaultMessage={'yaruski'} /></Heading>
         <Stack spacing={'2'} m={'0.4em 1em 0 1em'}>
-          {Object.keys(vList).map(function (key, index) {
+          {(() => {
             let rList = [];
-            if (Object.keys(vList).length) {
-              if (vList[key]) {
-                switch (key) {
-                  case "SQLi":
-                    rList.push(<Text key={index}>
-                      <Text as={"b"}>SQL injection</Text> <FormattedMessage id={"res_recommend_sqli"} defaultMessage={'yaruski'} />
-                    </Text>)
-                    break;
-                  case "XSS":
-                    rList.push(<Text key={index}>
-                      <Text as={"b"}>XSS</Text>:<FormattedMessage id={"res_recommend_xss"} defaultMessage={'yaruski'} />
-                    </Text>)
-                    break;
-                  case "SSRF":
-                    rList.push(<Text key={index}>
-                      <Text as={"b"}>SSRF</Text> <FormattedMessage id={"res_recommend_ssrf"} defaultMessage={'yaruski'} />
-                    </Text>)
-                    break;
+            let check = false;
+            Object.values(vList).forEach(val => val && (check = true));
+            if (check) {
+              Object.keys(vList).map(function (key, index) {
+                if (vList[key]) {
+                  switch (key) {
+                    case "SQLi":
+                      rList.push(<Text key={index}>
+                        <Text as={"b"}>SQL injection</Text> <FormattedMessage id={"res_recommend_sqli"} defaultMessage={'yaruski'} />
+                      </Text>)
+                      break;
+                    case "XSS":
+                      rList.push(<Text key={index}>
+                        <Text as={"b"}>XSS</Text>:<FormattedMessage id={"res_recommend_xss"} defaultMessage={'yaruski'} />
+                      </Text>)
+                      break;
+                    case "SSRF":
+                      rList.push(<Text key={index}>
+                        <Text as={"b"}>SSRF</Text> <FormattedMessage id={"res_recommend_ssrf"} defaultMessage={'yaruski'} />
+                      </Text>)
+                      break;
+                  }
                 }
-              }
+              })
             }
             else
               rList.push(
-                <Text key={index}><FormattedMessage id={"res_recommend_none"} defaultMessage={'yaruski'} /></Text>)
-
+                <Text key={Object.keys(vList)[0]}><FormattedMessage id={"res_recommend_none"} defaultMessage={'yaruski'} /></Text>)
             return rList
-          })}
+          })()}
         </Stack>
       </Box>
     </Stack>

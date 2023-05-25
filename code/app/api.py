@@ -278,11 +278,15 @@ async def start_test():
                     # Initialize xss investigation
                     xss.process(xss_list)
                     ansi_escape = re.compile(r'\x1b\[[0-9;]*m')
-                    with open(os.path.dirname(__file__) + log_file_path, 'r') as file:
+
+                    try:
+                        file = open(os.path.dirname(__file__) + log_file_path, mode='r')
                         for line in file:
                             line = ansi_escape.sub('', line)
                             elem['results']['xss'] += line
+                    finally:
                         file.close()
+
                 # SSRF
                 if ('ssrf' in elem['data']['testTo']):
                     opt_l = ['-H', url]
