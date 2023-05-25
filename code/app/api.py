@@ -253,39 +253,46 @@ async def start_test():
                         cookie_dict = {key: value for key, value in
                                        (cookie.split('=') for cookie in cookie_str.split('; '))}
 
-                    payload = xss_inject_form(url, cookie_dict if cookie_dict else None)
-                    xss_list = []
                     log_file_path = '\data\output.log'
                     with contextlib.suppress(FileNotFoundError):
                         os.remove(os.path.dirname(__file__) + log_file_path)
 
+                    payload = xss_inject_form(url, cookie_dict if cookie_dict else None)
+
+                    vuln_found = False
                     for i in payload:
-                        if (str(i.get('Method')) == 'GET'):
-                            xss_list.extend(['--url', i.get('payload')])
+                        if (vuln_found):
                             break
                         else:
-                            xss_list.extend(['--url', url, '--data', i.get('payload')])
-                            break
+                            xss_list = []
 
-                    xss_list.extend(['--headers', f'Accept-Language: en-US\nCookie: {cookie_str}'])
-                    xss_list.extend(['--crawl']) if elem['data']['crawl'] == 1 else None
-                    xss_list.extend(['--blind']) if elem['data']['blindXSS'] == 1 else None
-                    xss_list.extend(['--level', elem['data']['crawlingLevel']])
-                    xss_list.extend(['--skip'])
-                    xss_list.extend(['--file-log-level', 'INFO', '--log-file', 'app\data\output.log'])
-                    print(xss_list)
+                            if (str(i.get('Method')) == 'GET'):
+                                xss_list.extend(['--url', i.get('payload')])
+                            else:
+                                xss_list.extend(['--url', url, '--data', i.get('payload')])
 
-                    # Initialize xss investigation
-                    xss.process(xss_list)
-                    ansi_escape = re.compile(r'\x1b\[[0-9;]*m')
+                            xss_list.extend(['--headers', f'Accept-Language: en-US\nCookie: {cookie_str}'])
+                            xss_list.extend(['--crawl']) if elem['data']['crawl'] == 1 else None
+                            xss_list.extend(['--blind']) if elem['data']['blindXSS'] == 1 else None
+                            xss_list.extend(['--level', elem['data']['crawlingLevel']])
+                            xss_list.extend(['--skip'])
+                            xss_list.extend(['--file-log-level', 'INFO', '--log-file', 'app\data\output.log'])
 
-                    try:
-                        file = open(os.path.dirname(__file__) + log_file_path, mode='r')
-                        for line in file:
-                            line = ansi_escape.sub('', line)
-                            elem['results']['xss'] += line
-                    finally:
-                        file.close()
+                            print(xss_list)
+
+                            # Initialize xss investigation
+                            xss.process(xss_list)
+                            ansi_escape = re.compile(r'\x1b\[[0-9;]*m')
+
+                            try:
+                                file = open(os.path.dirname(__file__) + log_file_path, mode='r')
+                                for line in file:
+                                    line = ansi_escape.sub('', line)
+                                    elem['results']['xss'] += line
+                                    if ("GOOD" in line):
+                                        vuln_found = True
+                            finally:
+                                file.close()
 
                 # SSRF
                 if ('ssrf' in elem['data']['testTo']):
