@@ -32,7 +32,7 @@ function App() {
   const [locale, setLocale] = useState('en');
   const userLocale = navigator.language;
 
-  useEffect(() => setLocale(userLocale), [])
+  useEffect(() => Object.keys(text).forEach((key) => key === userLocale && setLocale(userLocale))  , [])
 
   return (
     <>

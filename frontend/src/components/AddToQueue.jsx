@@ -51,7 +51,7 @@ export default function AddToQueue() {
 
     // Options
     const optionsInitialValues = {
-        cookies: "None",
+        cookies: "",
         testTo: ["sqli", "xss"]
     };
     // SQLi Options
@@ -95,21 +95,19 @@ export default function AddToQueue() {
         sPVal: ''
     };
     const [options, setOptions] = useState({...optionsInitialValues, ...optionsSqliValues, ...optionsRadioBoxes,
-        ...optionsXSS, optionsSSRF});
+        ...optionsXSS, ...optionsSSRF});
     const handleOptionsChange = (e) => {
         const { name, value } = e.target || e;
         setOptions({
             ...options,
             [name]: value
         });
-        console.log(options)
     };
     const handleOptionsChanges = (name, values) => {
         setOptions({
             ...options,
             [name]: values,
         });
-        console.log(options);
     };
 
     const handleSubmit = (event) => {
@@ -175,7 +173,11 @@ export default function AddToQueue() {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(newQueue)
-                }).then(fetchQueues);
+                }).then(fetchQueues)
+                  .finally(() => {
+                      setUrl('');
+                      setOptions({...options, cookies: ''});
+                  });
             }
             else {
                 setErrText(intl.formatMessage({ id: "error_1", defaultMessage: 'Default message' }));
@@ -326,6 +328,7 @@ export default function AddToQueue() {
                                   variant="outline"
                                   pr="4.5rem"
                                   type="text"
+                                  value={options.cookies}
                                   color={textColor}
                                   placeholder={intl.formatMessage({ id: 'url_2', defaultMessage: 'yaruski'})}
                                   aria-label="Add a scan item"
