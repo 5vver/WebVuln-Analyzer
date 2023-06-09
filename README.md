@@ -27,6 +27,7 @@ To get started first things first run Uvicorn (ASGI Server), from `/code` direct
 
 Then cd into `/frontend` folder and run React app by typing:
 
+    npm install
 	npm start
 
 Go to localhost:3000 (127.0.0.1:3000) in your browser and you're good to go.

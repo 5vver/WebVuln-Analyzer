@@ -106,7 +106,7 @@ function parseMultilineLog(log) {
       }
     } else if (line.startsWith('----')) {
       dashesCount++;
-      if (dashesCount == 2) {
+      if (dashesCount === 2) {
         // Stop capturing after second set of dashes
         capture = false;
         currentEntry = null;
@@ -182,8 +182,8 @@ function Summary({data}) {
   let isXss = false;
   let isSsrf = false;
 
-  if (!!data.xss) {
-    const xLines = data.xss.split('\n');
+  if (!!data.xss_res) {
+    const xLines = data.xss_res.split('\n');
     for (let i = 0; i < xLines.length; i++) {
       const match = xLines[i].match(/(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) ([\w.]+) - (\w+) - (.*)/);
       if (match) {
@@ -196,8 +196,8 @@ function Summary({data}) {
     }
   }
 
-  if (!!data.ssrf) {
-    const sLines = data.ssrf.split('\n');
+  if (!!data.ssrf_res) {
+    const sLines = data.ssrf_res.split('\n');
     sLines.forEach(line => {
       if (line.includes('Potential vulnerable')) {
         isSsrf = true;
@@ -266,6 +266,9 @@ function Summary({data}) {
               case 3:
                 prColor = 'red.500'
                 break
+              default:
+                prColor = 'green.400'
+                break
             }
             return ((a / Object.keys(vList).length) * 100)
           })()} color={prColor} size='150px' thickness='10px'>
@@ -307,7 +310,7 @@ function Summary({data}) {
             let check = false;
             Object.values(vList).forEach(val => val && (check = true));
             if (check) {
-              Object.keys(vList).map(function (key, index) {
+              Object.keys(vList).forEach(function (key, index) {
                 if (vList[key]) {
                   switch (key) {
                     case "SQLi":
@@ -324,6 +327,8 @@ function Summary({data}) {
                       rList.push(<Text key={index}>
                         <Text as={"b"}>SSRF</Text> <FormattedMessage id={"res_recommend_ssrf"} defaultMessage={'yaruski'} />
                       </Text>)
+                      break;
+                    default:
                       break;
                   }
                 }
@@ -386,7 +391,7 @@ function Results() {
                         </Text>
                       </Td>
                     </Tr>
-                  ) : (<></>)
+                  ) : <Tr key={prop}></Tr>
                 ))}
               </Tbody>
             </Table>
@@ -409,7 +414,6 @@ function Results() {
             <Tab><FormattedMessage id={"res_tab_2"} defaultMessage={'yaruski'} /></Tab>
             <Tab><FormattedMessage id={"res_tab_3"} defaultMessage={'yaruski'} /></Tab>
             <Tab><FormattedMessage id={"res_tab_4"} defaultMessage={'yaruski'} /></Tab>
-
           </TabList>
           <TabIndicator
             mt="-1.5px"
@@ -456,7 +460,7 @@ function Results() {
                     </Tbody>
                   </Table>
                 </Box>
-                <Heading ml={'2'} size={'md'} mt={'1em'} mt={'1em'} mb={'1em'}><FormattedMessage id={"res_sqli_title_2"} defaultMessage={'yaruski'} /></Heading>
+                <Heading ml={'2'} size={'md'} mt={'1em'} mb={'1em'}><FormattedMessage id={"res_sqli_title_2"} defaultMessage={'yaruski'} /></Heading>
                 {tables ? (
                   <Stack spacing={'2em'}>
                       {tables}
@@ -467,10 +471,11 @@ function Results() {
               <TabPanel>
                 <Stack spacing={'2em'}>
                   <Heading ml={'2'} size={'md'} mt={'1em'}><FormattedMessage id={"res_xss_title_1"} defaultMessage={'yaruski'}/></Heading>
-                  <LogTable log={data.res.results.xss}/>
+                  <LogTable log={data.res.results.xss_res}/>
                   <Heading ml={'2'} size={'md'} mt={'1em'}><FormattedMessage id={"res_xss_title_2"} defaultMessage={'yaruski'}/></Heading>
+                  {console.log(data.res.results.xss_res)}
                   <Box>
-                    {parseMultilineLog(data.res.results.xss).map((log, i) => (
+                    {parseMultilineLog(data.res.results.xss_res).map((log, i) => (
                       <Box key={i} mb={4}>
                         <Table variant="simple">
                           <Thead>
@@ -502,7 +507,7 @@ function Results() {
               </TabPanel>
               {/* SSRF */}
               <TabPanel>
-                <LogsTable logString={data.res.results.ssrf}/>
+                <LogsTable logString={data.res.results.ssrf_res}/>
               </TabPanel>
             </TabPanels>
           ) : (<>Loading..</>)}

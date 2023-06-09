@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {Heading, Flex, Select, useColorMode, useColorModeValue, Button, Text} from "@chakra-ui/react";
+import {Heading, Flex, useColorMode, useColorModeValue, Button, Text} from "@chakra-ui/react";
 import { SunIcon, MoonIcon }from "@chakra-ui/icons"
 
 import { Link } from "react-router-dom"

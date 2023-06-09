@@ -162,7 +162,7 @@ export default function AddToQueue() {
                     },
                     "results": {
                         "sqli": {
-                            "log": '',
+                            "logs": '',
                             "data": ''
                         },
                         "xss": '',

@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {ChakraProvider, useColorMode, Button} from "@chakra-ui/react";
+import {ChakraProvider} from "@chakra-ui/react";
 
 import Header from "../components/Header";
 import Queues from "../components/Queues";
-import Console from "../components/Console";
 import ErrorPage from "../error-page"
 
 import { ColorModeScript } from '@chakra-ui/react'
@@ -11,7 +10,7 @@ import {theme} from "../styles/theme"
 import "@fontsource/oxanium/700.css";
 import "@fontsource/ubuntu";
 
-import { useLoaderData, Route, Routes, Outlet } from 'react-router-dom';
+import {Route, Routes, Navigate} from 'react-router-dom';
 import Results from "./Results"
 
 import { IntlProvider } from 'react-intl';
@@ -43,13 +42,10 @@ function App() {
               <Header />
             </LocaleContext.Provider>
             <Routes>
-              <Route errorElement={ErrorPage} path="/" element={
-                <>
-                  <Queues />
-                  {/*<Console />*/}
-                </>
-              }/>
-              <Route errorElement={ErrorPage} path="/results/:id" element={<Results />} />
+              <Route path="/" element={<Queues />}/>
+              <Route path="/results/:id" element={<Results />} />
+              <Route path="/error" element={<ErrorPage />} />
+              <Route path="*" element={<Navigate to="/error" replace />} />
             </Routes>
         </ChakraProvider>
     </IntlProvider>
