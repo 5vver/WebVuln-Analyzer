@@ -21,7 +21,13 @@ WebVuln Analyzer works with [Python](https://www.python.org/download/) version *
 Usage
 ----
 
-To get started first things first run Uvicorn (ASGI Server), from `/code` directory:
+You need running mongodb: e.g. Create docker mongodb container separately
+
+Install all python dependecies in `/code` directory:
+    
+    pip install -r requirements.txt
+
+Then initialize Uvicorn (ASGI Server), from `/code` directory:
 
     python main.py
 
@@ -33,3 +39,16 @@ Then cd into `/frontend` folder and run React app by typing:
 Go to localhost:3000 (127.0.0.1:3000) in your browser and you're good to go.
 
 You can find a sample run [here](*).
+
+Setup from docker-compose
+----
+
+You can also set up your docker container with running app:
+1. Change local variables in `.env` file in `\code` directory to:
+    SQLMAP_REST_ADDRESS=db
+    SQLMAP_REST_ADDRESS=host.docker.internal
+2. In main directory:
+    docker-compose up --build
+3. Enjoy.
+
+___It's not recommended to set up project this way, it could limit some functionals___
