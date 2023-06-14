@@ -37,11 +37,15 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-queues = []
+from dotenv import load_dotenv
+
+load_dotenv()
+
+MONGO_HOST = os.getenv('MONGO_HOST')
 
 async def init_db():
     client = motor.motor_asyncio.AsyncIOMotorClient(
-        "mongodb://localhost:27017"
+        "mongodb://" + MONGO_HOST + ":27017"
     )
 
     await init_beanie(database=client.queues_storage, document_models=[Queue])
@@ -281,7 +285,8 @@ async def start_test():
                     cookie_dict = {key: value for key, value in
                                    (cookie.split('=') for cookie in cookie_str.split('; '))}
 
-                log_file_path = '\data\output.log'
+                # log_file_path = '\data\output.log'
+                log_file_path = os.path.join("data", "output.log")
                 with contextlib.suppress(FileNotFoundError):
                     os.remove(os.path.dirname(__file__) + log_file_path)
 
@@ -313,7 +318,7 @@ async def start_test():
                         ansi_escape = re.compile(r'\x1b\[[0-9;]*m')
 
                         try:
-                            file = open(os.path.dirname(__file__) + log_file_path, mode='r')
+                            file = open(os.path.dirname(__file__) + "\\" + log_file_path, mode='r')
                             for line in file:
                                 line = ansi_escape.sub('', line)
                                 elem.results.xss_res += line

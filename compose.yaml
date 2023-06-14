@@ -1,0 +1,43 @@
+services:
+  db:
+    image: mongo:latest
+    volumes:
+      - mongodb_data_container:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - app-network
+
+  backend:
+    build: ./code
+    command: uvicorn app.api:app --host 0.0.0.0 --port 8000
+    volumes:
+      - ./code:/app
+    ports:
+      - 8000:8000
+      - 8775:8775
+    depends_on:
+      - db
+    networks:
+      - app-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+volumes:
+  mongodb_data_container:
+
+networks:
+  app-network:
+    driver: bridge
