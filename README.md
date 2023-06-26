@@ -5,7 +5,9 @@ WebVuln_Analyzer is a tool for web-application security investigation that combi
 Screenshots
 ----
 
-![Screenshot](https://user-images.githubusercontent.com/68349735/240414436-2b121bf1-2851-4004-8fe2-c9be25374311.png)
+![Demo1](https://user-images.githubusercontent.com/68349735/243019197-393bfa3b-bcee-4e0f-be04-d1ceb4fc5265.png)
+![Demo2](https://user-images.githubusercontent.com/68349735/243019451-3d2046f8-319b-4406-80da-b61811098a6a.png)
+![Demo3](https://user-images.githubusercontent.com/68349735/243018964-c1732837-5b5b-4922-ba35-61769a722d07.png)
 
 You can visit the [collection of screenshots](https://github.com/5vver/WebVuln-Analyzer/wiki/Screenshots) demonstrating some of the features.
 
