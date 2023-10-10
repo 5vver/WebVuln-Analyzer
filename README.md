@@ -1,6 +1,6 @@
 # WebVuln Analyzer
 
-WebVuln_Analyzer is a tool for web-application security investigation that combines open source penetration tools, such as: [sqlmap](https://github.com/sqlmapproject/sqlmap), [XSStrike](https://github.com/s0md3v/XSStrike) and [See-SURF](https://github.com/In3tinct/See-SURF). Provides a clear, laconic interface that enhances your interaction with the application. Includes flexible configurable options for each attack vector. The intuitive design offers ease-of-use usage. It also presents detailed results based on thorough scans of web applications, highlighting the seriousness of detected vulnerabilities and providing actionable recommendations (kind of).
+WebVuln_Analyzer is a tool for web-application security investigation that combines open source penetration tools, such as: [sqlmap](https://github.com/sqlmapproject/sqlmap), [XSStrike](https://github.com/s0md3v/XSStrike) and [See-SURF](https://github.com/In3tinct/See-SURF). Provides a clear, laconic interface that enhances your interaction with the application. Includes flexible configurable options for each attack vector. The intuitive design offers ease-of-use usage. It also presents detailed results based on thorough scans of web applications, highlighting the seriousness of detected vulnerabilities and providing actionable recommendations.
 
 Screenshots
 ----
